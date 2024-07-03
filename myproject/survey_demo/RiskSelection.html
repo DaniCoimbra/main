@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Survey{% endblock %}
+
+{% block content %}
+    <p>
+        Please answer the following questions.
+    </p>
+
+    {{ formfields }}
+
+    <div id="additional-text" style="display: none;">
+        {% for i in range(11) %}
+            <p id="text-{{ i }}" style="display: none;">Risk {{ i }} description.</p>
+        {% endfor %}
+    </div>
+
+    {{ next_button }}
+
+    <script>
+        $(document).ready(function() {
+            $("input[type='radio']").click(function() {
+                $("#additional-text p").hide();
+
+                var selectedValue = $("input[type='radio']:checked").val();
+
+                if (selectedValue !== undefined) {
+                    $("#additional-text").show();
+                    $("#text-" + selectedValue).show();
+                }
+            });
+        });
+    </script>
+{% endblock %}
