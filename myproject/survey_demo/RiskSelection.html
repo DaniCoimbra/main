@@ -3,24 +3,86 @@
 {% block title %}Survey{% endblock %}
 
 {% block content %}
+    {% if previous_risk %}
+        <p>Last time you chose a risk tolerance of {{ previous_risk }}. Please update your desired risk tolerance below.</p>
+    {% endif %}
+    
     <p>
-        Please answer the following questions.
+        Please select your level of risk tolerance.
     </p>
 
     {{ formfields }}
 
     <div id="additional-text" style="display: none;">
-        {% for i in range(11) %}
-            <p id="text-{{ i }}" style="display: none;">Risk {{ i }} description.</p>
-        {% endfor %}
+        <div id="text-0" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 0 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $0.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation0.png' }}" alt="LotteryIllicitation0" class="risk-image">
+        </div>
+        <div id="text-1" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 1 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $10.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation1.png' }}" alt="LotteryIllicitation1" class="risk-image">
+        </div>
+        <div id="text-2" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 2 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $20.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation2.png' }}" alt="LotteryIllicitation2" class="risk-image">
+        </div>
+        <div id="text-3" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 3 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $30.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation3.png' }}" alt="LotteryIllicitation3" class="risk-image">
+        </div>
+        <div id="text-4" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 4 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $40.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation4.png' }}" alt="LotteryIllicitation4" class="risk-image">
+        </div>
+        <div id="text-5" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 5 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $50.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation5.png' }}" alt="LotteryIllicitation5" class="risk-image">
+        </div>
+        <div id="text-6" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 6 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $60.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation6.png' }}" alt="LotteryIllicitation6" class="risk-image">
+        </div>
+        <div id="text-7" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 7 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $70.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation7.png' }}" alt="LotteryIllicitation7" class="risk-image">
+        </div>
+        <div id="text-8" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 8 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $80.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation8.png' }}" alt="LotteryIllicitation8" class="risk-image">
+        </div>
+        <div id="text-9" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 9 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $90.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation9.png' }}" alt="LotteryIllicitation9" class="risk-image">
+        </div>
+        <div id="text-10" class="risk-info" style="display: none;">
+            <p>If a risk tolerance of 10 is chosen, given $100 and a possibility to invest in the asset described above, the investment into the asset will be $100.<br> Note every dollar invested into the asset halves, i.e., becomes 0.5 with a probability of 50%, or it doubles, also with a probability of 50%.</p>
+            <img src="{{ static 'LotteryIllicitation10.png' }}" alt="LotteryIllicitation10" class="risk-image">
+        </div>
     </div>
 
+    <p>You will be selecting a risk tolerance that will guide your investments. A risk tolerance of zero means you will generally keep your money in risk-free options. A risk tolerance of 10 means you are willing to bear the maximal amount of risk that we will allow for in this session. Click each one of the numbers to see what it means for a simple asset.</p>
+
     {{ next_button }}
+
+    <style>
+        .risk-info {
+            display: flex;
+            align-items: center;
+        }
+        .risk-image {
+            max-width: 50%;
+            height: auto;
+            margin-right: 20px;
+        }
+        .risk-info p {
+            max-width: 50%;
+        }
+    </style>
 
     <script>
         $(document).ready(function() {
             $("input[type='radio']").click(function() {
-                $("#additional-text p").hide();
+                $("#additional-text div").hide();
 
                 var selectedValue = $("input[type='radio']:checked").val();
 

@@ -1,10 +1,11 @@
-{{ block title }}Survey{{ endblock }}
-{{ block content }}
+{% extends "global/Page.html" %}
 
+{% block title %}Survey{% endblock %}
+
+{% block content %}
     <p>
-        You chose {{ player.risk }}
+        The result of the multiplication is {{ player.multiplied_risk }}.
     </p>
 
     {{ next_button }}
-
-{{ endblock }}
+{% endblock %}

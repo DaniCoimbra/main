@@ -1,0 +1,58 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Lottery{% endblock %}
+
+{% block content %}
+    <p>Lottery {{ lottery_type }}.</p>
+
+    <div id="lottery-graph-A" {% if lottery_type == 'A' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-A" src="{{ static 'lotteryA.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <div id="lottery-graph-B" {% if lottery_type == 'B' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <img src="{{ static 'lotteryB.jpg' }}" style="width: 75%;">
+    </div>
+
+    <p>
+        Any amount not invested in the risky asset earns {{ risk_free_rate }} cents on the dollar of sure return.<br>
+        You have chosen a risk tolerance of {{ player.risk }}.<br>
+    </p>
+
+    {{ next_button }}
+
+    <style>
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            transform-origin: 0 0;
+            transform: scale(0.75);
+        }
+    </style>
+
+    <script>
+        function resizeIframe(iframe) {
+            var scale = 0.75;
+            var iframeContent = iframe.contentWindow.document.body;
+            iframe.style.height = iframeContent.scrollHeight + 'px';
+            iframe.style.width = iframeContent.scrollWidth + 'px';
+        }
+
+        document.getElementById('iframe-lottery-A').onload = function() {
+            resizeIframe(this);
+        };
+    </script>
+{% endblock %}

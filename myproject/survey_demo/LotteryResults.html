@@ -1,0 +1,22 @@
+{% extends "global/Page.html" %}
+{% load static %}
+
+{% block title %}Lottery Results{% endblock %}
+
+{% block content %}
+    <p>Your risk tolerance: {{ player.risk }}</p>
+    <p>Investment amount in risky asset: ${{ investment_amount }}</p>
+    <p>Return from risky asset: ${{ risky_return }}</p>
+    <p>Investment amount in risk-free asset: ${{ risk_free_investment }}</p>
+    <p>Return from risk-free asset: ${{ risk_free_return }}</p>
+    <p>Total return: ${{ total_return }}</p>
+    
+    <p>
+        The return on the risk-free asset is {{ risk_free_rate }}% and you invested ${{ risk_free_investment }} into it, 
+        which means you get back a total of ${{ risk_free_return }}.
+    </p>
+    
+    <p>You were given $100 to invest and in this round you made ${{ total_return }}.</p>
+
+    {{ next_button }}
+{% endblock %}
