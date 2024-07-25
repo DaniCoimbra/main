@@ -7,8 +7,8 @@ class C(BaseConstants):
     NAME_IN_URL = 'survey_demo'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 8
-    INVESTMENTS_FILE = '/workspaces/ubuntu/myproject/survey_demo/Investments.csv'
-    R_FILE = '/workspaces/ubuntu/myproject/survey_demo/R.csv'
+    INVESTMENTS_FILE = '_static/Investments.csv'
+    R_FILE = '_static/R.csv'
 
 investments = None
 R = None
