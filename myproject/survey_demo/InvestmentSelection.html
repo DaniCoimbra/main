@@ -1,0 +1,48 @@
+{% extends "global/Page.html" %}
+{% load static %}
+
+{% block title %}Survey{% endblock %}
+
+{% block content %}
+    {% if previous_investment %}
+        <p>Last time you chose an investment amount of ${{ previous_investment }}. Please update your desired investment amount below.</p>
+    {% endif %}
+    
+    <p>
+        Please select your investment amount.
+    </p>
+
+    <div>
+        <input type="range" id="investment_slider" name="investment_amount" min="0" max="100" value="{{ player.investment_amount }}" style="width: 80%;">
+        <label for="investment_slider">$<span id="investment_value">{{ player.investment_amount }}</span></label>
+    </div>
+
+    <div id="content-wrapper" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+        <div id="text-wrapper" style="width: 50%;">
+            <div id="additional-text">
+                <p>If you invest $<span id="investment_display">{{ player.investment_amount }}</span> you will have $<span id="gain_value"></span> with probability 50% and $<span id="loss_value"></span> with probability 50%.</p>
+            </div>
+        </div>
+        <div id="image-wrapper" style="width: 50%; text-align: center;">
+            <img id="risk-image" src="{% static 'LotteryIllicitation.png' %}" alt="Risk Image" style="width: 80%;">
+        </div>
+    </div>
+
+    {{ next_button }}
+
+    <script>
+        function updateValues(value) {
+            document.getElementById('investment_value').textContent = value;
+            document.getElementById('investment_display').textContent = value;
+            document.getElementById('gain_value').textContent = (value * 1.3).toFixed(2);
+            document.getElementById('loss_value').textContent = (value * 0.9).toFixed(2);
+        }
+
+        document.getElementById('investment_slider').addEventListener('input', function() {
+            var value = this.value;
+            updateValues(value);
+        });
+
+        updateValues(document.getElementById('investment_slider').value);
+    </script>
+{% endblock %}

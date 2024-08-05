@@ -1,4 +1,5 @@
 {% extends "global/Page.html" %}
+{% load static %}
 
 {% block title %}Lottery{% endblock %}
 
@@ -12,12 +13,28 @@
     </div>
 
     <div id="lottery-graph-B" {% if lottery_type == 'B' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
-        <img src="{{ static 'lotteryB.jpg' }}" style="width: 75%;">
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-B" src="{{ static 'lotteryB.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <div id="lottery-graph-C" {% if lottery_type == 'C' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-C" src="{{ static 'lotteryC.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <div id="lottery-graph-D" {% if lottery_type == 'D' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-D" src="{{ static 'lotteryD.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
     </div>
 
     <p>
-        Any amount not invested in the risky asset earns {{ risk_free_rate }} cents on the dollar of sure return.<br>
-        You have chosen a risk tolerance of {{ player.risk }}.<br>
+        Any ammount invested into the risky asset will generate a return of {{ random_return }}%.<br>
+        Any ammount invested into risk-free asset will earn a return of {{ risk_free_rate }}%.<br>
+        Your robot has invested {{ risky_investment }} in the risky asset.<br>
+        The remaining {{ risk_free_investment }} will be invested in the risk-free asset.
     </p>
 
     {{ next_button }}
