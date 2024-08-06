@@ -5,11 +5,24 @@
 
 {% block content %}
     {% if previous_investment %}
-        <p>Last time you chose an investment amount of ${{ previous_investment }}. Please update your desired investment amount below.</p>
+        <p> Now you have the option to adjust the amount you invest in the lottery that the robot uses to calibrate its investments. 
+            Your previous choice was ${{ previous_investment }}.
+        </p>
     {% endif %}
     
     <p>
-        Please select your investment amount.
+        You are about to make a choice that will help calibrate a robo-investor, which will then manage your investments for next sessions. 
+        You can revisit and adjust your choice every 4 investment periods.
+    </p>
+    <p>
+        <strong>Scenario:</strong><br>
+        You have $100 available to invest in a lottery with the following conditions:<br>
+        - The lottery has a 50% chance of increasing your investment by 30%<br>
+        - It also has a 50% chance of decreasing your investment by 10%<br>
+        As you scroll through the bar, you'll see how different investment amounts (ranging from $0 to $100) will affect your outcomes based on these probabilities.
+    </p>
+    <p>
+        Please select your investment amount below. Once you have made your decision, click the “Next” button to proceed.
     </p>
 
     <div>

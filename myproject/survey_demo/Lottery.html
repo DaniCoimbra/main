@@ -1,10 +1,20 @@
 {% extends "global/Page.html" %}
 {% load static %}
 
-{% block title %}Lottery{% endblock %}
+{% block title %}Investment Opportunity{% endblock %}
 
 {% block content %}
-    <p>Lottery {{ lottery_type }}.</p>
+    <p>
+        Below you see a representation of the returns of a stock index. 
+        The graph represents what happens to a dollar invested in this index.
+    </p>
+
+    <p>
+        For example, the loss is limited to $0.46 with a chance of 99.9%. 
+        The gain can be greater than 50% with a probability of 6.8%. 
+        The mean return from the investment is <strong>{{ mean }}%</strong>, i.e., a dollar becomes $1.10 on average. 
+        But as can be seen, it is a risky investment. The standard deviation of this investment is <strong>{{ std_dv }}%</strong>.
+    </p>
 
     <div id="lottery-graph-A" {% if lottery_type == 'A' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
         <div class="iframe-container">
@@ -31,10 +41,9 @@
     </div>
 
     <p>
-        Any ammount invested into the risky asset will generate a return of {{ random_return }}%.<br>
-        Any ammount invested into risk-free asset will earn a return of {{ risk_free_rate }}%.<br>
-        Your robot has invested {{ risky_investment }} in the risky asset.<br>
-        The remaining {{ risk_free_investment }} will be invested in the risk-free asset.
+        <p>
+            Click <strong>Next</strong> to see how the robo-investor will invest <strong>$100</strong> between <strong>this index and a risk-free investment with a rate of return of {{ risk_free_rate }}%</strong>.
+        </p>
     </p>
 
     {{ next_button }}
@@ -69,6 +78,18 @@
         }
 
         document.getElementById('iframe-lottery-A').onload = function() {
+            resizeIframe(this);
+        };
+
+        document.getElementById('iframe-lottery-B').onload = function() {
+            resizeIframe(this);
+        };
+
+        document.getElementById('iframe-lottery-C').onload = function() {
+            resizeIframe(this);
+        };
+
+        document.getElementById('iframe-lottery-D').onload = function() {
             resizeIframe(this);
         };
     </script>

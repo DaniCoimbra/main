@@ -1,12 +1,96 @@
 {% extends "global/Page.html" %}
 {% load static %}
 
-{% block title %}Lottery Results{% endblock %}
+{% block title %}Investment Opportunity{% endblock %}
 
 {% block content %}
-    <p>Chosen investment amount: ${{ investment_amount }}</p>
-    <p>Return from the previous lottery: ${{ lottery_return }}</p>
-    <p>Your cumulative return so far is ${{ cumulative_return }}.</p>
+    <p>
+        Below you see a representation of the returns of a stock index. 
+        The graph represents what happens to a dollar invested in this index.
+    </p>
+
+    <p>
+        For example, the loss is limited to $0.46 with a chance of 99.9%. 
+        The gain can be greater than 50% with a probability of 6.8%. 
+        The mean return from the investment is <strong>{{ mean }}%</strong>, i.e., a dollar becomes $1.10 on average. 
+        But as can be seen, it is a risky investment. The standard deviation of this investment is <strong>{{ std_dv }}%</strong>.
+    </p>
+
+    <div id="lottery-graph-A" {% if lottery_type == 'A' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-A" src="{{ static 'lotteryA.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <div id="lottery-graph-B" {% if lottery_type == 'B' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-B" src="{{ static 'lotteryB.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <div id="lottery-graph-C" {% if lottery_type == 'C' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-C" src="{{ static 'lotteryC.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <div id="lottery-graph-D" {% if lottery_type == 'D' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+        <div class="iframe-container">
+            <iframe id="iframe-lottery-D" src="{{ static 'lotteryD.html' }}" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <p>
+        <p>
+            Based on the formation you provided, the robo-investor has put <strong>${{ risky_investment }}</strong> in the risky asset and <strong>${{ risk_free_investment }}</strong> in the risk-free asset.     
+        </p>
+    </p>
 
     {{ next_button }}
+
+    <style>
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            transform-origin: 0 0;
+            transform: scale(0.75);
+        }
+    </style>
+
+    <script>
+        function resizeIframe(iframe) {
+            var scale = 0.75;
+            var iframeContent = iframe.contentWindow.document.body;
+            iframe.style.height = iframeContent.scrollHeight + 'px';
+            iframe.style.width = iframeContent.scrollWidth + 'px';
+        }
+
+        document.getElementById('iframe-lottery-A').onload = function() {
+            resizeIframe(this);
+        };
+
+        document.getElementById('iframe-lottery-B').onload = function() {
+            resizeIframe(this);
+        };
+
+        document.getElementById('iframe-lottery-C').onload = function() {
+            resizeIframe(this);
+        };
+
+        document.getElementById('iframe-lottery-D').onload = function() {
+            resizeIframe(this);
+        };
+    </script>
 {% endblock %}

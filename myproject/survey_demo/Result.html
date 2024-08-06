@@ -3,7 +3,30 @@
 {% block title %}Cumulative Results{% endblock %}
 
 {% block content %}
-    <p>In the last rounds, your investments returned ${{ cumulative_return }}.</p>
+    <p>
+        Out of the $100 available for investment in Round 1, the index return was {{lottery_1_random}}. The robo-investor put $<span id="round1_index_investment">{{ lottery_1_risky }}</span> in the index and $<span id="round1_risk_free_investment">{{ lottery_1_rf }}</span> in the risk-free asset. Thus, your total outcome from this investment is 
+        {{lottery_1_outcome}}.
+    </p>
+
+    <p>
+        Out of the $100 available for investment in Round 2, the index return was {{ lottery_2_random }}. The robo-investor put $<span id="round2_index_investment">{{ lottery_2_risky }}</span> in the index and $<span id="round2_risk_free_investment">{{ lottery_2_rf }}</span> in the risk-free asset. Thus, your total outcome from this investment is 
+        {{lottery_2_outcome}}.
+    </p>
+
+    <p>
+        Out of the $100 available for investment in Round 3, the index return was {{ lottery_3_random }}. The robo-investor put $<span id="round3_index_investment">{{ lottery_3_risky }}</span> in the index and $<span id="round3_risk_free_investment">{{ lottery_3_rf }}</span> in the risk-free asset. Thus, your total outcome from this investment is 
+        {{lottery_3_outcome}}.
+    </p>
+
+    <p>
+        Out of the $100 available for investment in Round 4, the index return was {{ lottery_4_random }}. The robo-investor put $<span id="round4_index_investment">{{ lottery_4_risky }}</span> in the index and $<span id="round4_risk_free_investment">{{ lottery_4_rf }}</span> in the risk-free asset. Thus, your total outcome from this investment is 
+        {{lottery_4_outcome}}.
+    </p>
+
+    <p>
+        The cumulative return from the $400 available for investments from Rounds 1, 2, 3, and 4 is the sum of the above, or <span id="cumulative_return">{{ cumulative_return }}</span>.
+    </p>
+
 
     {{ next_button }}
 {% endblock %}
