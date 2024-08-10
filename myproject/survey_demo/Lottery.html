@@ -1,19 +1,18 @@
 {% extends "global/Page.html" %}
 {% load static %}
 
-{% block title %}Investment Opportunity{% endblock %}
+{% block title %}Investment Opportunity {{round}}{% endblock %}
 
 {% block content %}
     <p>
-        Below you see a representation of the returns of a stock index. 
-        The graph represents what happens to a dollar invested in this index.
+        This month, economic conditions are such that the savings account pays an interest rate of <strong>{{ risk_free_rate }}%</strong> 
+        and the stock market index return has an expected value of <strong>{{ mean }}%</strong> and a volatility represented by a standard deviation of 
+        <strong>{{ std_dv }}%</strong>. The graph below represents the distribution of this risky market index return.
     </p>
 
     <p>
-        For example, the loss is limited to $0.46 with a chance of 99.9%. 
-        The gain can be greater than 50% with a probability of 6.8%. 
-        The mean return from the investment is <strong>{{ mean }}%</strong>, i.e., a dollar becomes $1.10 on average. 
-        But as can be seen, it is a risky investment. The standard deviation of this investment is <strong>{{ std_dv }}%</strong>.
+        Specifically, the graph represents what happens to each dollar invested in this index. 
+        You can move the cursor on the graph to obtain more information on the probabilities associated with the minimal returns on every invested dollar.
     </p>
 
     <div id="lottery-graph-A" {% if lottery_type == 'A' %}style="display:block;"{% else %}style="display:none;"{% endif %}>

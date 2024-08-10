@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Session Introduction{% endblock %}
+
+{% block content %}
+    <div style="margin: 20px 0; line-height: 1.6; font-size: 1.1em;">
+        <p>Thank you for participating in this session. It should take approximately <strong>X minutes</strong> to complete.</p>
+
+        <p>
+            During this session, you will be asked to make a choice that will help us understand your attitude towards risk. This choice will calibrate a robo-investor, which will manage your investments for the duration of the session.
+        </p>
+
+        <p>
+            You can revisit and adjust your choice every four investment rounds. Each round represents a month of investment, and there are four sections of four investment rounds. After each section, you'll have an opportunity to adjust your choice.
+        </p>
+
+        <p>
+            For your participation, you will receive <strong>$X</strong>, which is independent of your responses. Additionally, a bonus payment will be determined by a random draw of one of the four investment sections, and you will be paid 5% of your investment performance for that section.
+        </p>
+
+        <p style="text-align: center; margin-top: 30px;">
+            <strong>Good luck, and thank you for your participation!</strong>
+        </p>
+    </div>
+    {{ next_button }}
+{% endblock %}

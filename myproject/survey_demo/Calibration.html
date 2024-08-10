@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+{% load static %}
+
+{% block title %}Robo-Investor Calibration{% endblock %}
+
+{% block content %}
+    <p>
+        A robo-investor has been calibrated to make monthly investment choices on your behalf. 
+        The calibration was based on your choice of investment in the lottery on the previous screen. 
+        This lottery is only used to calibrate the robo-investor and will not be used for the determination of your bonus payment.
+    </p>
+
+    <h3>Scenario:</h3>
+
+    <p>
+        Every month you allocate $100 for your robo-investor to distribute between a risk-free savings account and a stock market index.
+    </p>
+
+    <p>
+        The robot is perfectly informed about the interest rate on the savings account and about the distribution of possible returns on the stock market index. 
+        Both the interest rate and the distribution of stock market index returns may change from month to month. 
+        Your robot will adapt choices to reflect your risk attitudes as inferred by your choice in the lottery of the last screen.  
+    </p>
+
+    {{ next_button }}
+{% endblock %}

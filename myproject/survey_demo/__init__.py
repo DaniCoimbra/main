@@ -94,11 +94,25 @@ def calculate_lottery_return(player: Player):
     print(f"Total Return: {player.lottery_return}")
     print("\n")
 
-    lotteries.append(L(distribution_column, random_return, mean, std_dv, risky_investment, outcome))    
+    lotteries.append(L(distribution_column, risk_free_rate, random_return, mean, std_dv, risky_investment, outcome))    
     
     return mean, std_dv, risk_free_rate
 
 # PAGES
+class Intro(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == 1
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {}
+    
+class Calibration(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {}
+    
 class InvestmentSelection(Page):
     form_model = 'player'
     form_fields = ['investment_amount']
@@ -106,7 +120,7 @@ class InvestmentSelection(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return {
-            'previous_investment': player.investment_amount if player.lottery_round > 1 else None
+            'previous_investment': player.investment_amount if player.lottery_round > 1 else None,
         }
 
 class Lottery(Page):
@@ -116,6 +130,7 @@ class Lottery(Page):
         lottery_types = ['A', 'B', 'C', 'D']
         lottery_type = lottery_types[(player.lottery_round - 1) % len(lottery_types)]
         return {
+            'round': player.lottery_round,
             'lottery_type': lottery_type,
             'risk_free_rate': round(rf * 100, 2),
             'mean': round(mean, 2),
@@ -130,7 +145,9 @@ class LotteryResults(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return {
+            'round': player.lottery_round - 1,
             'lottery_type': lotteries[-1].type,
+            'risk_free_rate': lotteries[-1].rf_rate,
             'mean': round(lotteries[-1].mean, 2),
             'std_dv': round(lotteries[-1].std_dv, 2),
             'risky_investment': round(lotteries[-1].risk, 2),
@@ -170,7 +187,34 @@ class Result(Page):
         }
 
 page_sequence = [
+    Intro,
+    
     InvestmentSelection, 
+    Calibration,
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Result,
+    
+    InvestmentSelection, 
+    Calibration,
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Result,
+    
+    InvestmentSelection, 
+    Calibration,
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Lottery, LotteryResults, 
+    Result,
+    
+    InvestmentSelection, 
+    Calibration,
     Lottery, LotteryResults, 
     Lottery, LotteryResults, 
     Lottery, LotteryResults, 
