@@ -50,14 +50,14 @@ def calculate_lottery_return(player: Player):
     investment_amount = player.investment_amount
     
     column_names = [
-        'mu10sigma25rf0', 'mu10sigma25rf2', 'mu10sigma25rf3', 'mu10sigma25rf4',
-        'mu10sigma15rf0', 'mu10sigma15rf2', 'mu10sigma15rf3', 'mu10sigma15rf4',
-        'mu13sigma25rf0', 'mu13sigma25rf2', 'mu13sigma25rf3', 'mu13sigma25rf4',
-        'mu13sigma15rf0', 'mu13sigma15rf2', 'mu13sigma15rf3', 'mu13sigma15rf4'
+        'mu10sigma25rf0','mu10sigma25rf2','mu10sigma25rf3','mu10sigma25rf4',
+        'mu10sigma15rf0','mu10sigma15rf2','mu10sigma15rf3','mu10sigma15rf4',
+        'mu13sigma25rf0','mu15sigma25rf2','mu15sigma25rf3','mu15sigma25rf4',
+        'mu13sigma15rf0','mu13sigma15rf2','mu13sigma15rf3','mu13sigma15rf4'
     ]
 
     column_name = column_names[(player.lottery_round - 1) % len(column_names)]
-    risky_investment = investment_matrix[column_name][investment_amount]
+    risky_investment = min(100, float(investment_matrix[column_name][investment_amount]))
 
     risk_free_investment = 100 - risky_investment
 
