@@ -147,7 +147,7 @@ class LotteryResults(Page):
         return {
             'round': player.lottery_round - 1,
             'lottery_type': lotteries[-1].type,
-            'risk_free_rate': lotteries[-1].rf_rate,
+            'risk_free_rate': round(lotteries[-1].rf_rate*100,2),
             'mean': round(lotteries[-1].mean, 2),
             'std_dv': round(lotteries[-1].std_dv, 2),
             'risky_investment': round(lotteries[-1].risk, 2),
