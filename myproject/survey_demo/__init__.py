@@ -3,6 +3,9 @@ import random
 import pandas as pd
 import json
 
+import itertools
+import math
+
 from survey_demo.lottery import L
 
 class C(BaseConstants):
@@ -33,17 +36,28 @@ class Player(BasePlayer):
     lottery_round = models.IntegerField(initial=1)
     lotteries = models.LongStringField(initial='[]')
     treatment = models.StringField(initial="")
+    investment_return = models.LongStringField(initial='[]')
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
     import random
     
     # Assign treatment to each participant
+    players = subsession.get_players()
+    num_players = len(players)
     treatments = C.TREATMENTS
-    if subsession.round_number == 1:
-        for player in subsession.get_players():
-            player.treatment = random.choice(treatments)
-            print('Assigned treatment:', player.treatment)
+    num_treatments = len(treatments)
+
+    num_players_per_treatment = math.ceil(num_players / num_treatments)
+    treatment_list = treatments * num_players_per_treatment
+    treatment_list = treatment_list[:num_players]
+
+    random.shuffle(treatment_list)
+    
+    # Assign treatments to players
+    for player, treatment in zip(players, treatment_list):
+        player.treatment = treatment
+        print('Assigned treatment:', player.treatment)
 
     # Read files
     investments_df = pd.read_csv(C.INVESTMENT_MATRIX_FILE)
@@ -117,7 +131,7 @@ def calculate_lottery_return(player: Player):
     # Serialize and store back in the player model
     player.lotteries = json.dumps(existing_lotteries)
     
-    return mean, std_dv, risk_free_rate
+    return mean, std_dv, risk_free_rate, risky_investment, 100-risky_investment
 
 # PAGES
 class Intro(Page):
@@ -170,7 +184,7 @@ class Calibration(Page):
 class Lottery(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        mean, std_dv, rf = calculate_lottery_return(player)
+        mean, std_dv, rf, risky_investment, risk_free_investment = calculate_lottery_return(player)
         lottery_types = ['A', 'B', 'C', 'D']
         lottery_type = lottery_types[(player.lottery_round - 1) % len(lottery_types)]
         return {
@@ -179,30 +193,35 @@ class Lottery(Page):
             'risk_free_rate': round(rf * 100, 2),
             'mean': round(mean, 2),
             'std_dv': round(std_dv, 2),
-        }
-
-class LotteryResults(Page):
-    @staticmethod
-    def vars_for_template(player: Player):
-        lotteries = json.loads(player.lotteries) if player.lotteries else []
-
-        # Determine the index for the current round
-        round_index = player.lottery_round - 1
-
-        print(lotteries)
-    
-        return {
-            'round': player.lottery_round,
-            'lottery_type': lotteries[round_index].get('type'),
-            'risk_free_rate': round(lotteries[round_index].get('rf_rate')*100,2),
-            'mean': round(lotteries[round_index].get('mean'), 2),
-            'std_dv': round(lotteries[round_index].get('std_dv'), 2),
-            'risky_investment': round(lotteries[round_index].get('risk'), 2),
-            'risk_free_investment': round(100 - lotteries[round_index].get('risk'), 2),
+            'risky_investment': round(risky_investment, 2),
+            'risk_free_investment': round(risk_free_investment, 2),
         }
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         player.lottery_round += 1
+
+# class LotteryResults(Page):
+#     @staticmethod
+#     def vars_for_template(player: Player):
+#         lotteries = json.loads(player.lotteries) if player.lotteries else []
+
+#         # Determine the index for the current round
+#         round_index = player.lottery_round - 1
+
+#         print(lotteries)
+    
+#         return {
+#             'round': player.lottery_round,
+#             'lottery_type': lotteries[round_index].get('type'),
+#             'risk_free_rate': round(lotteries[round_index].get('rf_rate')*100,2),
+#             'mean': round(lotteries[round_index].get('mean'), 2),
+#             'std_dv': round(lotteries[round_index].get('std_dv'), 2),
+#             'risky_investment': round(lotteries[round_index].get('risk'), 2),
+#             'risk_free_investment': round(100 - lotteries[round_index].get('risk'), 2),
+#         }
+#     @staticmethod
+#     def before_next_page(player: Player, timeout_happened):
+#         player.lottery_round += 1
     
 class Result(Page):
     @staticmethod
@@ -257,6 +276,7 @@ class Result(Page):
 
         # Calculate cumulative return
         cumulative_return = sum(lottery_data[f'lottery_{i+1}_outcome'] for i in range(display_count))
+        # player.investment_return.append(cumulative_return)
         current_round = round_index + 1
         round_numbers = [current_round - i for i in reversed(range(display_count))]
 
@@ -267,30 +287,38 @@ class Result(Page):
             'round_numbers': round_numbers,  # Pass round numbers as a list
         }
 
+class End(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        print(player.investment_return)
+        return {}
+
 page_sequence = [
     Intro,
     
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, Result,
+    InvestmentSelection, Calibration, Lottery, Result,
+    InvestmentSelection, Calibration, Lottery, Result,
+    InvestmentSelection, Calibration, Lottery, Result,
 
     
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
 
     
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
 
     
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,    
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,    
+
+    End,
 ]
 

@@ -7,12 +7,24 @@
     <p>
         This month, economic conditions are such that the savings account pays an interest rate of <strong>{{ risk_free_rate }}%</strong> 
         and the stock market index return has an expected value of <strong>{{ mean }}%</strong> and a volatility represented by a standard deviation of 
-        <strong>{{ std_dv }}%</strong>. The graph below represents the distribution of this risky market index return.
+        <strong>{{ std_dv }}%</strong>.
     </p>
 
     <p>
-        Specifically, the graph represents what happens to each dollar invested in this index. 
-        You can move the cursor on the graph to obtain more information on the probabilities associated with the minimal returns on every invested dollar.
+        The graph below represents the distribution of this risky market index return. The graph represents what happens to each dollar invested in this index.    </p>
+    </p>
+
+    <div class="investment-summary-box">
+        <p>
+            Based on the information you provided, the robo-investor has put <strong>${{ risky_investment }}</strong> in the risky asset and <strong>${{ risk_free_investment }}</strong> in the risk-free asset.     
+        </p>
+        <p>
+            The outcome of this investment will be given to you at the end of this 4-month investment section.
+        </p>
+    </div>
+
+    <p style="padding-top:20px">
+        Move the cursor on the graph to obtain the probabilities associated with the returns on every invested dollar.
     </p>
 
     <div id="lottery-graph-A" {% if lottery_type == 'A' %}style="display:block;"{% else %}style="display:none;"{% endif %}>
@@ -40,9 +52,7 @@
     </div>
 
     <p>
-        <p>
-            Click <strong>Next</strong> to see how the robo-investor will invest <strong>$100</strong> between <strong>this index and a risk-free investment with a rate of return of {{ risk_free_rate }}%</strong>.
-        </p>
+        Click <strong>Next</strong> to see how the robo-investor will invest <strong>$100</strong> between <strong>this index and a risk-free investment with a rate of return of {{ risk_free_rate }}%</strong>.
     </p>
 
     {{ next_button }}
@@ -65,6 +75,22 @@
             border: 0;
             transform-origin: 0 0;
             transform: scale(0.75);
+        }
+        .investment-summary-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .investment-summary-box p {
+            margin: 0 0 10px;
+        }
+
+        .investment-summary-box strong {
+            color: black;
         }
     </style>
 

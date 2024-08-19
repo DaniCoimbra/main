@@ -1,26 +1,24 @@
 {% extends "global/Page.html" %}
 {% load static %}
 
-{% block title %}Investment Choice{% endblock %}
+{% block title %}Robo-Calibration via Hypothetical Lottery{% endblock %}
 
 {% block content %}
     {% if previous_investment %}
-        <p> Now you have the option to adjust the amount you invest in the lottery that the robot uses to calibrate its investments. 
-            Your previous choice was ${{ previous_investment }}.
-        </p>
+        <p>Now you have the option to adjust the amount you invest in the lottery that the robot uses to calibrate its investments. Your previous choice was ${{ previous_investment }}.</p>
     {% endif %}
     
     <p>
-        Please, make a choice that will be used to calibrate a robo-investor, which will then manage your investments. 
-        You can revisit and adjust your choice every four investment rounds/months.
-    </p>
+        A robo-investor <strong>will be</strong> calibrated to make monthly investment choices on your behalf. The calibration is based on your choice of investment in the <strong>following</strong> lottery. This lottery is only used to calibrate the robo-investor and will not be used for the determination of your bonus payment.    </p>
     <p>
         <strong>Scenario:</strong><br>
-        You have $100 available to invest in a lottery that has a 50% chance of increasing your investment by 30% and a 50% chance of decreasing your investment by 10%.<br>
-        Any amount you do not invest in the lottery remains unchanged, i.e., you can think of it as a riskfree investment with rate of return of 0%.
-        As you scroll through the bar, you'll see how different investment amounts (ranging from $0 to $100) will affect your outcomes based on these probabilities.<br>
-    </p>
+        You have $100 available to invest in a lottery that has a 50% chance of increasing your investment by 30% and a 50% chance of decreasing your investment by 10%.
+        Any amount you do not invest in the lottery remains unchanged, i.e., you can think of it as a riskfree investment with rate of return of 0%.    </p>
 
+    </p>
+    <p>
+        Scroll through the bar to see how different investment amounts (ranging from $0 to $100) will affect your outcome. When settled on a choice, please, click NEXT.
+    </p>
     <div>
         <input type="range" id="investment_slider" name="investment_amount" min="0" max="100" value="{{ player.investment_amount }}" style="width: 80%;">
         <label for="investment_slider">$<span id="investment_value">{{ player.investment_amount }}</span></label>
@@ -29,12 +27,11 @@
     <div id="content-wrapper" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
         <div id="text-wrapper" style="width: 50%;">
             <div id="additional-text">
-                <p>If out of $100 you invest $<span id="investment_display"></span> in the lottery, the lottery will pay back $<span id="gain_value"></span> with a probability of 50% and $<span id="loss_value"></span> with a probability of 50%. Thus, it is equally likely that you will lose $<span id="loss_amount"></span> or gain $<span id="gain_amount"></span>.</p>
-                <p>Since you kept $<span id="uninvested"></span> uninvested, your total outcome from the $100 given to you will be $<span id="total_gain"></span> or $<span id="total_loss"></span>, equally likely.</p>
+                <!-- The content will be updated dynamically by JavaScript -->
             </div>
         </div>
         <div id="image-wrapper" style="width: 50%; text-align: center;">
-            <img id="risk-image" src="{% static 'LotteryIllicitation.png' %}" alt="Risk Image" style="width: 80%;">
+            <img id="risk-image" src="{% static 'LotteryIllicitationNew.png' %}" alt="Risk Image" style="width: 80%;">
         </div>
     </div>
 
@@ -49,16 +46,19 @@
             var total_loss = (uninvested + parseFloat(loss)).toFixed(2);
             var gain_amount = (0.3 * value).toFixed(2);
             var loss_amount = (0.1 * value).toFixed(2);
-            
+
             document.getElementById('investment_value').textContent = value;
-            document.getElementById('investment_display').textContent = value;
-            document.getElementById('gain_value').textContent = (value * 1.3).toFixed(2);
-            document.getElementById('loss_value').textContent = (value * 0.9).toFixed(2);
-            document.getElementById('uninvested').textContent = uninvested.toFixed(2);
-            document.getElementById('total_gain').textContent = total_gain;
-            document.getElementById('total_loss').textContent = total_loss;
-            document.getElementById('gain_amount').textContent = gain_amount;
-            document.getElementById('loss_amount').textContent = loss_amount;
+
+            var additionalText = '';
+            if (value == 0) {
+                additionalText = 'If out of $100 you invest $0 in the lottery, your total outcome will be $100.';
+            } else {
+                additionalText = 
+                    `If out of $100 you invest $${value} in the lottery, the lottery will pay back $${gain} with a probability of 50% and $${loss} with a probability of 50%. Thus, it is equally likely that you will lose $${loss_amount} or gain $${gain_amount}.<br>` +
+                    `Since you kept $${uninvested.toFixed(2)} uninvested, your total outcome from the $100 given to you will be $${total_gain} or $${total_loss}, equally likely.`;
+            }
+
+            document.getElementById('additional-text').innerHTML = additionalText;
         }
 
         document.getElementById('investment_slider').addEventListener('input', function() {
