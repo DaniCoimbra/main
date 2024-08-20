@@ -341,22 +341,22 @@ page_sequence = [
     InvestmentSelection, Calibration, Lottery, Result,
 
     
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
 
     
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
 
     
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
-    # InvestmentSelection, Calibration, Lottery, LotteryResults, Result,    
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,
+    InvestmentSelection, Calibration, Lottery, LotteryResults, Result,    
 
     End,
 ]
