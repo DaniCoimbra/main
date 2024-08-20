@@ -321,13 +321,15 @@ class End(Page):
         payoff = cumulative_return * 0.02
         lottery_size = len(chosen_lotteries)
 
+        lottery_indexes = [i+1 for i in chosen_indexes]
+
         # Return the chosen lotteries and their data to the template
         return {
             **lottery_data,
             'num_blocks': num_blocks,
             'lottery_size': lottery_size,
-            'chosen_indexes': chosen_indexes,
-            'blocks_indices': sorted(set(i // block_size for i in chosen_indexes)),
+            'chosen_indexes': lottery_indexes,
+            'blocks_indices': sorted(set((i // block_size) + 1 for i in chosen_indexes)),
             'cumulative_return': round(cumulative_return, 2),
             'payoff': round(payoff, 2),
         }
