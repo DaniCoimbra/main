@@ -35,7 +35,14 @@
         </div>
     </div>
 
-    {{ next_button }}
+    <div>
+        <button disabled class="otree-btn-next btn btn-primary" id="place_holder" style="cursor: not-allowed; background-color: gray; border-color: gray;">Next</button>
+        <span id="help_text" style="display: none; position: absolute; top: 100%; left: 0; background-color: #f9f9f9; border: 1px solid #ddd; padding: 5px; font-size: small; color: red;">Move the slider to enable the button</span>
+    </div>
+
+    <div id="next_button" style="display:none">
+        {{ next_button }}
+    </div>
 
     <script>
         function updateValues(value) {
@@ -59,6 +66,8 @@
             }
 
             document.getElementById('additional-text').innerHTML = additionalText;
+            document.getElementById('place_holder').style = 'display:none';
+            document.getElementById('next_button').style = 'display:block';
         }
 
         document.getElementById('investment_slider').addEventListener('input', function() {
@@ -66,6 +75,6 @@
             updateValues(value);
         });
 
-        updateValues(document.getElementById('investment_slider').value);
+        // updateValues(document.getElementById('investment_slider').value);
     </script>
 {% endblock %}

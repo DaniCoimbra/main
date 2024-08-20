@@ -36,7 +36,7 @@ class Player(BasePlayer):
     lottery_round = models.IntegerField(initial=1)
     lotteries = models.LongStringField(initial='[]')
     treatment = models.StringField(initial="")
-    investment_return = models.LongStringField(initial='[]')
+    chosen_lotteries = models.LongStringField(initial='[]')
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
@@ -50,9 +50,10 @@ def creating_session(subsession: Subsession):
 
     num_players_per_treatment = math.ceil(num_players / num_treatments)
     treatment_list = treatments * num_players_per_treatment
-    treatment_list = treatment_list[:num_players]
 
     random.shuffle(treatment_list)
+
+    treatment_list = treatment_list[:num_players]
     
     # Assign treatments to players
     for player, treatment in zip(players, treatment_list):
@@ -130,8 +131,6 @@ def calculate_lottery_return(player: Player):
     
     # Serialize and store back in the player model
     player.lotteries = json.dumps(existing_lotteries)
-    
-    return mean, std_dv, risk_free_rate, risky_investment, 100-risky_investment
 
 # PAGES
 class Intro(Page):
@@ -184,44 +183,25 @@ class Calibration(Page):
 class Lottery(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        mean, std_dv, rf, risky_investment, risk_free_investment = calculate_lottery_return(player)
+        if len(json.loads(player.lotteries)) < player.lottery_round:
+            calculate_lottery_return(player)
+        else:
+            print("Skipping")
         lottery_types = ['A', 'B', 'C', 'D']
         lottery_type = lottery_types[(player.lottery_round - 1) % len(lottery_types)]
+        lottery = json.loads(player.lotteries)[player.lottery_round-1]
         return {
             'round': player.lottery_round,
             'lottery_type': lottery_type,
-            'risk_free_rate': round(rf * 100, 2),
-            'mean': round(mean, 2),
-            'std_dv': round(std_dv, 2),
-            'risky_investment': round(risky_investment, 2),
-            'risk_free_investment': round(risk_free_investment, 2),
+            'risk_free_rate': round(lottery.get('rf_rate'), 2),
+            'mean': round(lottery.get('mean'), 2),
+            'std_dv': round(lottery.get('std_dv'), 2),
+            'risky_investment': round(lottery.get('risk'), 2),
+            'risk_free_investment': round(lottery.get('risk_free'), 2),
         }
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         player.lottery_round += 1
-
-# class LotteryResults(Page):
-#     @staticmethod
-#     def vars_for_template(player: Player):
-#         lotteries = json.loads(player.lotteries) if player.lotteries else []
-
-#         # Determine the index for the current round
-#         round_index = player.lottery_round - 1
-
-#         print(lotteries)
-    
-#         return {
-#             'round': player.lottery_round,
-#             'lottery_type': lotteries[round_index].get('type'),
-#             'risk_free_rate': round(lotteries[round_index].get('rf_rate')*100,2),
-#             'mean': round(lotteries[round_index].get('mean'), 2),
-#             'std_dv': round(lotteries[round_index].get('std_dv'), 2),
-#             'risky_investment': round(lotteries[round_index].get('risk'), 2),
-#             'risk_free_investment': round(100 - lotteries[round_index].get('risk'), 2),
-#         }
-#     @staticmethod
-#     def before_next_page(player: Player, timeout_happened):
-#         player.lottery_round += 1
     
 class Result(Page):
     @staticmethod
@@ -262,17 +242,11 @@ class Result(Page):
         lottery_data = {}
         for i in range(display_count):
             index = -display_count + i
-            if index < len(last_lotteries):
-                lottery = last_lotteries[index]
-                lottery_data[f'lottery_{i+1}_risky'] = round(lottery.get('risk', 0), 2)
-                lottery_data[f'lottery_{i+1}_rf'] = round(100 - lottery.get('risk', 0), 2)
-                lottery_data[f'lottery_{i+1}_random'] = round(lottery.get('random', 0), 2)
-                lottery_data[f'lottery_{i+1}_outcome'] = round(lottery.get('outcome', 0), 2)
-            else:
-                lottery_data[f'lottery_{i+1}_risky'] = 0
-                lottery_data[f'lottery_{i+1}_rf'] = 0
-                lottery_data[f'lottery_{i+1}_random'] = 0
-                lottery_data[f'lottery_{i+1}_outcome'] = 0
+            lottery = last_lotteries[index]
+            lottery_data[f'lottery_{i+1}_risky'] = round(lottery.get('risk', 0), 2)
+            lottery_data[f'lottery_{i+1}_rf'] = round(lottery.get('risk_free', 0), 2)
+            lottery_data[f'lottery_{i+1}_random'] = round(lottery.get('random', 0), 2)
+            lottery_data[f'lottery_{i+1}_outcome'] = round(lottery.get('outcome', 0), 2)
 
         # Calculate cumulative return
         cumulative_return = sum(lottery_data[f'lottery_{i+1}_outcome'] for i in range(display_count))
@@ -290,8 +264,73 @@ class Result(Page):
 class End(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        print(player.investment_return)
-        return {}
+        # Load the lotteries from the player
+        lotteries = json.loads(player.lotteries) if player.lotteries else []
+        chosen_lotteries = json.loads(player.chosen_lotteries) if player.chosen_lotteries else []
+
+        # Define block sizes based on treatment
+        if player.treatment == 'treatment_1':
+            block_size = 1
+            num_blocks = 4
+        elif player.treatment == 'treatment_2':
+            block_size = 2
+            num_blocks = 2
+        elif player.treatment == 'treatment_3':
+            block_size = 4
+            num_blocks = 1
+
+        if not player.chosen_lotteries or player.chosen_lotteries.strip() == '[]':
+            chosen_indexes = []
+            chosen_lotteries = []
+
+            # Choose blocks based on the treatment
+            if player.treatment == 'treatment_1':
+                chosen_indexes = random.sample(range(len(lotteries)), num_blocks)
+            elif player.treatment == 'treatment_2':
+                block_indexes = random.sample(range(len(lotteries) // block_size), num_blocks)
+                chosen_indexes = [i * block_size + j for i in block_indexes for j in range(block_size)]
+            elif player.treatment == 'treatment_3':
+                block_indexes = random.sample(range(len(lotteries) // block_size), num_blocks)
+                chosen_indexes = [i * block_size + j for i in block_indexes for j in range(block_size)]
+
+            # Ensure we do not exceed the total number of lotteries
+            chosen_indexes = sorted(set(chosen_indexes))
+            if len(chosen_indexes) > len(lotteries):
+                chosen_indexes = sorted(range(len(lotteries)))
+
+            # Collect the chosen lotteries
+            chosen_lotteries = [lotteries[i] for i in chosen_indexes]
+
+            # Save chosen lotteries to the player object
+            player.chosen_lotteries = json.dumps(chosen_lotteries)
+        
+        else:
+            chosen_lotteries = json.loads(player.chosen_lotteries)
+            # Derive chosen indexes from chosen lotteries
+            chosen_indexes = [lotteries.index(lottery) for lottery in chosen_lotteries]
+
+        # Prepare the lottery data
+        lottery_data = {}
+        for i, lottery in enumerate(chosen_lotteries):
+            lottery_data[f'lottery_{i+1}_risky'] = round(lottery.get('risk', 0), 2)
+            lottery_data[f'lottery_{i+1}_rf'] = round(lottery.get('risk_free', 0), 2)
+            lottery_data[f'lottery_{i+1}_random'] = round(lottery.get('random', 0), 2)
+            lottery_data[f'lottery_{i+1}_outcome'] = round(lottery.get('outcome', 0), 2)
+        
+        cumulative_return = sum(lottery_data[f'lottery_{i+1}_outcome'] for i in range(len(chosen_lotteries)))
+        payoff = cumulative_return * 0.02
+        lottery_size = len(chosen_lotteries)
+
+        # Return the chosen lotteries and their data to the template
+        return {
+            **lottery_data,
+            'num_blocks': num_blocks,
+            'lottery_size': lottery_size,
+            'chosen_indexes': chosen_indexes,
+            'blocks_indices': sorted(set(i // block_size for i in chosen_indexes)),
+            'cumulative_return': round(cumulative_return, 2),
+            'payoff': round(payoff, 2),
+        }
 
 page_sequence = [
     Intro,

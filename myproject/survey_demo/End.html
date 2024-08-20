@@ -1,0 +1,112 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Investment Payment{% endblock %}
+
+{% block content %}
+    <div style="margin: 20px 0; line-height: 1.6; font-size: 1.1em;">
+        <p>
+            Thank you for completing the 16 investment rounds!
+        </p>
+
+        {% if num_blocks == 1 %}
+        <div>
+            <p>
+                Investment Block <strong>{{blocks_indices.0}}</strong> has been <strong>randomly</strong> selected for your payment. <br>
+                Your cumulative payoff from that Block was <strong>${{cumulative_return}}</strong> token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
+            
+                This will be your payment for today after you answer a short survey on the next page.<br>
+                For your reference, below is the summary of your investments in the Block {{blocks_indices.0}}.
+            </p>
+        </div>
+        {% endif %}
+
+        {% if num_blocks == 2 %}
+        <div>
+            <p>
+                Investment Blocks <strong>{{blocks_indices.0}} and {{blocks_indices.1}}</strong> have been <strong>randomly</strong> selected for your payment. <br>
+                Your cumulative payoff from these blocks was ${{cumulative_return}} token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
+            
+                This will be your payment for today after you answer a short survey on the next page.<br>
+                For your reference, below is the summary of your investments in the Blocks {{blocks_indices.0}} and {{blocks_indices.1}}.
+            </p>
+        </div>
+        {% endif %}
+
+        {% if num_blocks == 4 %}
+        <div>
+            <p>
+                Investment Blocks <strong>{{blocks_indices.0}}, {{blocks_indices.1}}, {{blocks_indices.2}} and {{blocks_indices.3}}</strong> have been <strong>randomly</strong> selected for your payment. <br>
+                Your cumulative payoff from these blocks was ${{cumulative_return}} token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
+            
+                This will be your payment for today after you answer a short survey on the next page. <br>
+                For your reference, below is the summary of your investments in the Blocks {{blocks_indices.0}}, {{blocks_indices.1}}, {{blocks_indices.2}} and {{blocks_indices.3}}.
+
+            </p>
+        </div>
+        {% endif %}
+
+        <div class="investment-round">
+            <p><strong>Round {{chosen_indexes.0}} Results:</strong></p>
+            <p>
+                Out of the $100 available for investment, the index return was <strong>{{ lottery_1_random }}%</strong>. The robo-investor allocated 
+                <strong>$<span id="round1_index_investment">{{ lottery_1_risky }}</span></strong> to the index and 
+                <strong>$<span id="round1_risk_free_investment">{{ lottery_1_rf }}</span></strong> to the risk-free asset.
+            </p>
+            <p>
+                Your total outcome from this investment is <strong>${{ lottery_1_outcome }}</strong>.
+            </p>
+        </div>
+
+        <div class="investment-round">
+            <p><strong>Round {{chosen_indexes.1}} Results:</strong></p>
+            <p>
+                Out of the $100 available for investment, the index return was <strong>{{ lottery_2_random }}%</strong>. The robo-investor allocated 
+                <strong>$<span id="round2_index_investment">{{ lottery_2_risky }}</span></strong> to the index and 
+                <strong>$<span id="round2_risk_free_investment">{{ lottery_2_rf }}</span></strong> to the risk-free asset.
+            </p>
+            <p>
+                Your total outcome from this investment is <strong>${{ lottery_2_outcome }}</strong>.
+            </p>
+        </div>
+
+        <div class="investment-round">
+            <p><strong>Round {{chosen_indexes.2}} Results:</strong></p>
+            <p>
+                Out of the $100 available for investment, the index return was <strong>{{ lottery_3_random }}%</strong>. The robo-investor allocated 
+                <strong>$<span id="round3_index_investment">{{ lottery_3_risky }}</span></strong> to the index and 
+                <strong>$<span id="round3_risk_free_investment">{{ lottery_3_rf }}</span></strong> to the risk-free asset.
+            </p>
+            <p>
+                Your total outcome from this investment is <strong>${{ lottery_3_outcome }}</strong>.
+            </p>
+        </div>
+
+        <div class="investment-round">
+            <p><strong>Round {{chosen_indexes.3}} Results:</strong></p>
+            <p>
+                Out of the $100 available for investment, the index return was <strong>{{ lottery_4_random }}%</strong>. The robo-investor allocated 
+                <strong>$<span id="round4_index_investment">{{ lottery_4_risky }}</span></strong> to the index and 
+                <strong>$<span id="round4_risk_free_investment">{{ lottery_4_rf }}</span></strong> to the risk-free asset.
+            </p>
+            <p>
+                Your total outcome from this investment is <strong>${{ lottery_4_outcome }}</strong>.
+            </p>
+        </div>
+
+    </div>
+    {{ next_button }}
+
+    <style>
+        .investment-round {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .investment-round p {
+            margin: 5px 0;
+            font-size: 15px;
+        }
+    </style>
+
+{% endblock %}
