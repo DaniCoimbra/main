@@ -35,14 +35,22 @@
         </div>
     </div>
 
+    {% if not previous_investment %}
     <div>
         <button disabled class="otree-btn-next btn btn-primary" id="place_holder" style="cursor: not-allowed; background-color: gray; border-color: gray;">Next</button>
         <span id="help_text" style="display: none; position: absolute; top: 100%; left: 0; background-color: #f9f9f9; border: 1px solid #ddd; padding: 5px; font-size: small; color: red;">Move the slider to enable the button</span>
     </div>
-
+    
     <div id="next_button" style="display:none">
         {{ next_button }}
     </div>
+    {% endif %}
+
+    {% if previous_investment %}
+    <div id="next_button" style="display: block;">
+        {{ next_button }}
+    </div>
+    {% endif %}
 
     <script>
         function updateValues(value) {
@@ -75,6 +83,11 @@
             updateValues(value);
         });
 
+        if (document.getElementById('next_button').style.display == 'block') {
+            updateValues(document.getElementById('investment_slider').value);
+        }
+
         // updateValues(document.getElementById('investment_slider').value);
     </script>
+
 {% endblock %}

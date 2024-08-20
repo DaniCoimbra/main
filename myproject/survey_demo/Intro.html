@@ -16,13 +16,34 @@
             At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each block of four investment rounds, you will be given the outcome of the investment, both cumulative and per round as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.  
         </p>
 
-        <p>
-            For your participation, you will receive the outcome of a randomly chosen investment block. The exchange rate between token-dollars and US dollars is <strong>2 US cents for every 100 token-dollars.</strong> The average  payment based on all possible decisions that a robo-advisor can take per investment block is <strong>$8.50</strong> but you can make more or less depending on your hypothetical lottery investment and the outcomes of the investments chosen for payment. The absolute minimal and maximal payments are $4.60 and $17.30 respectively.
-        </p>
+        <div class="investment-summary-box">
+            <p>
+                For your participation, you will receive the outcome of a randomly chosen investment block. The exchange rate between token-dollars and US dollars is <strong>2 US cents for every 100 token-dollars.</strong> The average  payment based on all possible decisions that a robo-advisor can take per investment block is <strong>$8.50</strong> but you can make more or less depending on your hypothetical lottery investment and the outcomes of the investments chosen for payment. The absolute minimal and maximal payments are $3.60 and $19.40 respectively.
+            </p>
+        </div>
 
         <p style="text-align: center; margin-top: 30px;">
             <strong>Good luck, and thank you for your participation!</strong>
         </p>
     </div>
     {{ next_button }}
+
+    <style>
+        .investment-summary-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .investment-summary-box p {
+            margin: 0 0 10px;
+        }
+
+        .investment-summary-box strong {
+            color: black;
+        }
+    </style>
 {% endblock %}

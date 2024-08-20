@@ -165,16 +165,16 @@ class InvestmentSelection(Page):
 
     
 class Calibration(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        # Show InvestmentSelection only for the appropriate rounds
-        if player.treatment == 'treatment_2' and player.lottery_round % 2 == 1:
-            return True
-        elif player.treatment == 'treatment_3' and player.lottery_round % 4 == 1:
-            return True
-        elif player.treatment == 'treatment_1':
-            return True
-        return False
+    # @staticmethod
+    # def is_displayed(player: Player):
+    #     # Show InvestmentSelection only for the appropriate rounds
+    #     if player.treatment == 'treatment_2' and player.lottery_round % 2 == 1:
+    #         return True
+    #     elif player.treatment == 'treatment_3' and player.lottery_round % 4 == 1:
+    #         return True
+    #     elif player.treatment == 'treatment_1':
+    #         return True
+    #     return False
     @staticmethod
     def vars_for_template(player: Player):
         return {}
@@ -193,7 +193,7 @@ class Lottery(Page):
         return {
             'round': player.lottery_round,
             'lottery_type': lottery_type,
-            'risk_free_rate': round(lottery.get('rf_rate'), 2),
+            'risk_free_rate': round(lottery.get('rf_rate') * 100, 2),
             'mean': round(lottery.get('mean'), 2),
             'std_dv': round(lottery.get('std_dv'), 2),
             'risky_investment': round(lottery.get('risk'), 2),
@@ -256,6 +256,7 @@ class Result(Page):
 
         return {
             **lottery_data,
+            'total': 100 * len(last_lotteries),
             'lottery_size': len(last_lotteries),
             'cumulative_return': round(cumulative_return, 2),
             'round_numbers': round_numbers,  # Pass round numbers as a list
@@ -338,25 +339,25 @@ page_sequence = [
     Intro,
     
     InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
 
     
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,    
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
     
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
 
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,
-    InvestmentSelection, Calibration, Lottery, Result,   
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
 
     End,
 ]
