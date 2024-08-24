@@ -1,0 +1,54 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Subjective Risk Aversion{% endblock %}
+
+{% block content %}
+    <p>1. In terms of financial decisions, what is your attitude:</p>
+
+    <form method="post">
+        <div class="risk-question">
+            <div class="question">
+                <div class="radios-container">
+                    {{ form.q4 }}
+                </div>
+            </div>
+        </div>
+
+        {{ next_button }}
+    </form>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .risk-question {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .question {
+        margin-bottom: 30px;
+    }
+    .radios-container {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    .radio-item {
+        text-align: center;
+    }
+    .radio-item input[type="radio"] {
+        display: block;
+        margin: 0 auto;
+    }
+    .radio-item label {
+        display: block;
+        margin-top: 5px;
+        text-align: center;
+        width: 100%;
+    }
+    .radios-container .form-check {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+{% endblock %}

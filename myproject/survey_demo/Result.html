@@ -1,12 +1,22 @@
 {% extends "global/Page.html" %}
 
-{% block title %}Cumulative Results{% endblock %}
+{% block title %}
+    {% if player.treatment == "treatment_1" %}
+        Round Results
+    {% else %}
+        Cumulative Results
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 
     <div class="cumulative-results-container">
         <p class="cumulative-summary">
-            The cumulative return from the ${{ total }} available for investments is <strong>$<span id="cumulative_return">{{ cumulative_return }}</span></strong>.
+            {% if player.treatment == "treatment_1" %}
+                The return from the ${{ total }} available for investments in this round is <strong>$<span id="cumulative_return">{{ cumulative_return }}</span></strong>.
+            {% else %}
+                The cumulative return from the ${{ total }} available for investments is <strong>$<span id="cumulative_return">{{ cumulative_return }}</span></strong>.
+            {% endif %}
         </p>
 
         {% if lottery_size >= 1 %}

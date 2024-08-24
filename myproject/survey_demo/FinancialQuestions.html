@@ -1,0 +1,76 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Subjective Risk Aversion{% endblock %}
+
+{% block content %}
+    <p>1. Suppose you had $100 in a savings account and the interest rate was 2% per year. After 5 years, how much do you think you would have in the account if you left the money to grow?</p>
+
+    <form method="post">
+        <div class="risk-question">
+            <div class="question">
+                <div class="radios-container">
+                    {{ form.q5 }}
+                </div>
+            </div>
+        </div>
+
+
+    <p>2. Imagine that the interest rate on your savings account was 1% per year and inflation was 2% per year. After 1 year, would you be able to buy:</p>
+
+        <div class="risk-question">
+            <div class="question">
+                <div class="radios-container">
+                    {{ form.q6 }}
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <p>3. Do you think that the following statement is true or false? "Buying a single company stock usually provides a safer return than a stock mutual fund."</p>
+
+        <div class="risk-question">
+            <div class="question">
+                <div class="radios-container">
+                    {{ form.q7 }}
+                </div>
+            </div>
+        </div>
+    </form>
+    {{ next_button }}
+
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .risk-question {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .question {
+        margin-bottom: 30px;
+    }
+    .radios-container {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    .radio-item {
+        text-align: center;
+    }
+    .radio-item input[type="radio"] {
+        display: block;
+        margin: 0 auto;
+    }
+    .radio-item label {
+        display: block;
+        margin-top: 5px;
+        text-align: center;
+        width: 100%;
+    }
+    .radios-container .form-check {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+{% endblock %}

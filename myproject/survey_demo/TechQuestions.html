@@ -1,0 +1,68 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Technology Questions{% endblock %}
+
+{% block content %}
+    <p>Please answer the following technology-related questions:</p>
+
+    <form method="post">
+        <div class="questions">
+            <div class="question">
+                <p>1. I find it easy to get technology to do what I want it to do:</p>
+                <div class="radios-container">
+                    {{ form.q1 }}
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Using technology helps me accomplish tasks more quickly:</p>
+                <div class="radios-container">
+                    {{ form.q2 }}
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. I find it easy to recover from errors encountered while using technology:</p>
+                <div class="radios-container">
+                    {{ form.q3 }}
+                </div>
+            </div>
+        </div>
+
+        {{ next_button }}
+    </form>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .questions {
+        margin-top: 20px;
+    }
+    .question {
+        margin-bottom: 30px;
+    }
+    .radios-container {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-start;
+    }
+    .radio-item {
+        text-align: center;
+    }
+    .radio-item input[type="radio"] {
+        display: block;
+        margin: 0 auto;
+    }
+    .radio-item label {
+        display: block;
+        margin-top: 5px;
+        text-align: center;
+        width: 100%; /* Ensures label spans the width of its container */
+    }
+    .radios-container .form-check {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+{% endblock %}
