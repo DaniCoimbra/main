@@ -12,10 +12,13 @@
         <div>
             <p>
                 Investment Block <strong>{{blocks_indices.0}}</strong> has been <strong>randomly</strong> selected for your payment. <br>
-                Your cumulative payoff from that Block was <strong>${{cumulative_return}}</strong> token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
-            
-                This will be your payment for today after you answer a short survey on the next page.<br>
-                For your reference, below is the summary of your investments in the Block {{blocks_indices.0}}.
+
+                <div class="investment-summary-box">
+                    Your cumulative payoff from that Block was <strong>${{cumulative_return}}</strong> token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
+                
+                    This will be your payment for today <strong>after you answer a short survey</strong> on the next page.<br>
+                </div>
+                    For your reference, below is the summary of your investments in the Block {{blocks_indices.0}}.
             </p>
         </div>
         {% endif %}
@@ -24,10 +27,13 @@
         <div>
             <p>
                 Investment Blocks <strong>{{blocks_indices.0}} and {{blocks_indices.1}}</strong> have been <strong>randomly</strong> selected for your payment. <br>
-                Your cumulative payoff from these blocks was ${{cumulative_return}} token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
-            
-                This will be your payment for today after you answer a short survey on the next page.<br>
-                For your reference, below is the summary of your investments in the Blocks {{blocks_indices.0}} and {{blocks_indices.1}}.
+                
+                <div class="investment-summary-box">
+                    Your cumulative payoff from these blocks was ${{cumulative_return}} token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
+                
+                    This will be your payment for today <strong>after you answer a short survey</strong> on the next page.<br>
+                </div>
+                    For your reference, below is the summary of your investments in the Blocks {{blocks_indices.0}} and {{blocks_indices.1}}.
             </p>
         </div>
         {% endif %}
@@ -36,10 +42,13 @@
         <div>
             <p>
                 Investment Rounds <strong>{{blocks_indices.0}}, {{blocks_indices.1}}, {{blocks_indices.2}} and {{blocks_indices.3}}</strong> have been <strong>randomly</strong> selected for your payment. <br>
-                Your cumulative payoff from these rounds was ${{cumulative_return}} token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
-            
-                This will be your payment for today after you answer a short survey on the next page. <br>
-                For your reference, below is the summary of your investments in the Rounds {{blocks_indices.0}}, {{blocks_indices.1}}, {{blocks_indices.2}} and {{blocks_indices.3}}.
+                
+                <div class="investment-summary-box">
+                    Your cumulative payoff from these rounds was ${{cumulative_return}} token-dollars. Those correspond to <strong>{{payoff}} USD</strong>.
+                
+                    This will be your payment for today <strong>after you answer a short survey</strong> on the next page. <br>
+                </div>
+                    For your reference, below is the summary of your investments in the Rounds {{blocks_indices.0}}, {{blocks_indices.1}}, {{blocks_indices.2}} and {{blocks_indices.3}}.
 
             </p>
         </div>
@@ -106,6 +115,23 @@
         .investment-round p {
             margin: 5px 0;
             font-size: 15px;
+        }
+        .investment-summary-box {
+            margin-top: 10px;
+            margin-bottom:10px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .investment-summary-box p {
+            margin: 0 0 10px;
+        }
+
+        .investment-summary-box strong {
+            color: black;
         }
     </style>
 

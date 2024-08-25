@@ -40,6 +40,7 @@ class Player(BasePlayer):
     chosen_lotteries = models.LongStringField(initial='[]')
     investment_choices = models.LongStringField(initial='[]')
     risky_draw = models.LongStringField(initial='[]')
+    final_payoff = models.LongStringField(initial="")
     q1 = models.IntegerField(
         choices=C.LABELS,
         widget=widgets.RadioSelectHorizontal,
@@ -57,15 +58,15 @@ class Player(BasePlayer):
     )
     q4 = models.IntegerField(
         choices=[
-            (1, "Adventurous"),
-            (2, ""),
-            (3, ""),
-            (4, ""),
-            (5, ""),
-            (6, ""),
-            (7, ""),
-            (8, "Prudent"),
-            (9, "I do not know")
+            (1, "1 - Adventurous"),
+            (2, "2"),
+            (3, "3"),
+            (4, "4"),
+            (5, "5"),
+            (6, "6"),
+            (7, "7"),
+            (8, "8 - Prudent"),
+            (9, "9 - I do not know")
         ],
         widget=widgets.RadioSelectHorizontal,
         label="In terms of financial decisions, what is your attitude?"
@@ -99,6 +100,7 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal,
         label="Do you think that the following statement is true or false? Buying a single company stock usually provides a safer return than a stock mutual fund."
     )
+    
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
@@ -150,8 +152,8 @@ def calculate_lottery_return(player: Player):
 
     risk_free_investment = 100 - risky_investment
 
-    distribution_columns = ['A', 'B', 'C', 'D']
-    distribution_column = distribution_columns[(player.lottery_round - 1) % len(distribution_columns)]
+    distribution_columns = ['A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'C', 'C', 'C', 'C', 'D', 'D', 'D', 'D']
+    distribution_column = distribution_columns[player.lottery_round - 1]
     random_return = random.choice(distributions[distribution_column])
     
     mean = int(column_name.split('mu')[1].split('sigma')[0])
@@ -208,15 +210,8 @@ class Intro(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        if player.treatment == 'treatment_1':
-            treatment_value = 1
-        elif player.treatment == 'treatment_2':
-            treatment_value = 2
-        elif player.treatment == 'treatment_3':
-            treatment_value = 3
-
         return {
-            'treatment': treatment_value,
+            'treatment': player.treatment,
         }
     
 class InvestmentSelection(Page):
@@ -237,6 +232,7 @@ class InvestmentSelection(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return {
+            'treatment': player.treatment,
             'previous_investment': player.investment_amount if player.lottery_round > 1 else None,
         }
     
@@ -257,7 +253,9 @@ class InvestmentSelection(Page):
 class Calibration(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return {}
+        return {
+            'treatment': player.treatment,
+        }
     
 
 class Lottery(Page):
@@ -267,10 +265,11 @@ class Lottery(Page):
             calculate_lottery_return(player)
         else:
             print("Skipping")
-        lottery_types = ['A', 'B', 'C', 'D']
-        lottery_type = lottery_types[(player.lottery_round - 1) % len(lottery_types)]
+        lottery_types = ['A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'C', 'C', 'C', 'C', 'D', 'D', 'D', 'D']
+        lottery_type = lottery_types[player.lottery_round - 1]
         lottery = json.loads(player.lotteries)[player.lottery_round-1]
         return {
+            'treatment': player.treatment,
             'round': player.lottery_round,
             'lottery_type': lottery_type,
             'risk_free_rate': round(lottery.get('rf_rate') * 100, 2),
@@ -398,9 +397,12 @@ class End(Page):
         payoff = cumulative_return * 0.02
         lottery_size = len(chosen_lotteries)
 
+        player.final_payoff = str(round(payoff, 2))
+
         # Return the chosen lotteries and their data to the template
         return {
             **lottery_data,
+            'treatment': player.treatment,
             'num_blocks': num_blocks,
             'lottery_size': lottery_size,
             'chosen_indexes': [i+1 for i in chosen_indexes],
@@ -458,6 +460,14 @@ class FinancialQuestions(Page):
             player.q7
         ]
 
+# PAGES
+class ThankYou(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'payoff': player.final_payoff
+        }
+    
 page_sequence = [
     Intro,
     
@@ -467,24 +477,25 @@ page_sequence = [
     InvestmentSelection, Lottery, Result,
 
     
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
     
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
 
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
-    # InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
+    InvestmentSelection, Lottery, Result,
 
     End,
     TechQuestions,
     RiskQuestions,
     FinancialQuestions,
+    ThankYou,
 ]
 

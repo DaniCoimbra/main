@@ -1,56 +1,133 @@
 {% extends "global/Page.html" %}
 {% load static %}
 
-{% block title %}Robo-Calibration via Hypothetical Lottery{% endblock %}
+{% block title %}
+<div id="default_title" style="display: block;">
+    Robo-Calibration via Hypothetical Lottery
+</div>
+
+<div id="instructions_title" style="display: none;">
+    Instructions Review
+</div>
+{% endblock %}
 
 {% block content %}
-    {% if previous_investment %}
-        <p>Now you have the option to adjust the amount you invest in the lottery that the robot uses to calibrate its investments. Your previous choice was ${{ previous_investment }}.</p>
-    {% endif %}
-    
-    <p>
-        A robo-investor <strong>will be</strong> calibrated to make monthly investment choices on your behalf. The calibration is based on your choice of investment in the <strong>following</strong> lottery. This lottery is only used to calibrate the robo-investor and will not be used for the determination of your bonus payment.    </p>
-    <p>
-        <strong>Scenario:</strong><br>
-        You have $100 available to invest in a lottery that has a 50% chance of increasing your investment by 30% and a 50% chance of decreasing your investment by 10%.
-        Any amount you do not invest in the lottery remains unchanged, i.e., you can think of it as a riskfree investment with rate of return of 0%.    </p>
+    <!-- Calibration Content -->
+    <div id="calibration-content">
+        {% if previous_investment %}
+            <p>Now you have the option to adjust the amount you invest in the lottery that the robot uses to calibrate its investments. Your previous choice was ${{ previous_investment }}.</p>
+        {% endif %}
+        
+        <p>
+            A robo-investor will be calibrated to make monthly investment choices on your behalf. The calibration is based on your choice of investment in the following lottery. This lottery is only used to calibrate the robo-investor and will not be used for the determination of your bonus payment.
+        <p>
+            <strong>Calibration Lottery:</strong><br>
+            You have $100 available to invest in a lottery that has a 50% chance of increasing your investment by 30% and a 50% chance of decreasing your investment by 10%.
+            Any amount you do not invest in the lottery remains unchanged, i.e., you can think of it as a risk-free investment with rate of return of 0%. 
+        </p>
 
-    </p>
-    <p>
-        Scroll through the bar to see how different investment amounts (ranging from $0 to $100) will affect your outcome. When settled on a choice, please, click NEXT.
-    </p>
-    <div>
-        <input type="range" id="investment_slider" name="investment_amount" min="0" max="100" value="{{ player.investment_amount }}" style="width: 80%;">
-        <label for="investment_slider">$<span id="investment_value">{{ player.investment_amount }}</span></label>
-    </div>
+        <p>
+            Scroll through the bar to see how different investment amounts (ranging from $0 to $100) will affect your outcome. When settled on a choice, please, click NEXT.
+        </p>
+        <div>
+            <input type="range" id="investment_slider" name="investment_amount" min="0" max="100" value="{{ player.investment_amount }}" style="width: 80%;">
+            <label for="investment_slider">$<span id="investment_value">{{ player.investment_amount }}</span></label>
+        </div>
 
-    <div id="content-wrapper" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-        <div id="text-wrapper" style="width: 50%;">
-            <div id="additional-text">
-                <!-- The content will be updated dynamically by JavaScript -->
+        <div id="content-wrapper" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+            <div id="text-wrapper" style="width: 50%;">
+                <div id="additional-text">
+                    <!-- The content will be updated dynamically by JavaScript -->
+                </div>
+            </div>
+            <div id="image-wrapper" style="width: 50%; text-align: center;">
+                <img id="risk-image" src="{% static 'LotteryIllicitationNew.png' %}" alt="Risk Image" style="width: 80%;">
             </div>
         </div>
-        <div id="image-wrapper" style="width: 50%; text-align: center;">
-            <img id="risk-image" src="{% static 'LotteryIllicitationNew.png' %}" alt="Risk Image" style="width: 80%;">
+
+        {% if not previous_investment %}
+        <div>
+            <button disabled class="otree-btn-next btn btn-primary" id="place_holder" style="margin-bottom:10px; cursor: not-allowed; background-color: gray; border-color: gray;">Next</button>
+            <span id="help_text" style="display: none; position: absolute; top: 100%; left: 0; background-color: #f9f9f9; border: 1px solid #ddd; padding: 5px; font-size: small; color: red;">Move the slider to enable the button</span>
+        </div>
+        
+        <div id="next_button" style="display:none;">
+            {{ next_button }}
+        </div>
+        {% endif %}
+
+        {% if previous_investment %}
+        <div id="next_button" style="display: block;">
+            {{ next_button }}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Instructions Content (Initially Hidden) -->
+    <div id="instructions-content" style="display: none;">
+        <div style="margin: 20px 0; line-height: 1.6; font-size: 1.1em;">
+            <p>Thank you for participating in this session. It should take at most <strong>30 minutes</strong> to complete, with <strong>5 minutes</strong> allocated for this screen alone. Please, read it carefully.</p>
+
+            <p>
+                During this session, you will be asked to make a choice that will help us understand your attitude towards risk. The choice is a hypothetical investment of up to $100 in a lottery that has equal chances of increasing your investment by 30% or decreasing it by 10%. Any amount that is not invested in the lottery remains unchanged. Your choice will be used to calibrate a robo-investor, which will manage your investments for the duration of the session.
+            </p>
+
+            {% if treatment == "treatment_3" %}
+                <p>
+                    The session is conducted as a series of investment rounds. Each round represents a month of investment, and there are eight blocks of two investment rounds. After each block, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+                </p>
+                <p>
+                    At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each block of four investment rounds, you will be given the outcome of the investment, both cumulative and per round as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
+                </p>
+            {% elif treatment == "treatment_2" %}
+                <p>
+                    The session is conducted as a series of investment rounds. Each round represents a month of investment, and there are eight blocks of two investment rounds. After each block, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+                </p>
+                <p>
+                    At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each block of two investment rounds, you will be given the outcome of the investment, both cumulative and per round as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
+                </p>
+            {% elif treatment == "treatment_1" %}
+                <p>
+                    The session is conducted as a series of investment rounds. Each round represents a month of investment. After each round, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+                </p>
+                <p>
+                    At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each round, you will be given the outcome of the investment for that round, as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
+                </p>
+            {% endif %}
+
+            <div class="investment-summary-box">
+                <p>
+                    For your participation, you will receive the outcome of {% if treatment == "treatment_3" %}a randomly chosen investment block{% elif treatment == "treatment_2" %}two randomly chosen (different) investment blocks{% elif treatment == "treatment_1" %}four randomly chosen (different) investment rounds{% endif %}. The exchange rate between token-dollars and US dollars is <strong>2 US cents for every 100 token-dollars.</strong> The average payment based on all possible decisions that a robo-advisor can take {% if treatment == 3 %}per investment block{% elif treatment == 2 %}per two investment blocks{% elif treatment == 1 %}over four rounds{% endif %} is <strong>$8.50</strong> but you can make more or less depending on your hypothetical lottery investment and the outcomes of the investments chosen for payment. The absolute minimal and maximal payments are $3.60 and $19.40 respectively.
+                </p>
+            </div>
+
+            <p style="text-align: center; margin-top: 30px;">
+                <strong>Good luck, and thank you for your participation!</strong>
+            </p>
         </div>
     </div>
 
-    {% if not previous_investment %}
-    <div>
-        <button disabled class="otree-btn-next btn btn-primary" id="place_holder" style="cursor: not-allowed; background-color: gray; border-color: gray;">Next</button>
-        <span id="help_text" style="display: none; position: absolute; top: 100%; left: 0; background-color: #f9f9f9; border: 1px solid #ddd; padding: 5px; font-size: small; color: red;">Move the slider to enable the button</span>
-    </div>
-    
-    <div id="next_button" style="display:none">
-        {{ next_button }}
-    </div>
-    {% endif %}
+    <!-- Instructions Button -->
+    <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
 
-    {% if previous_investment %}
-    <div id="next_button" style="display: block;">
-        {{ next_button }}
-    </div>
-    {% endif %}
+    <style>
+        .investment-summary-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .investment-summary-box p {
+            margin: 0 0 10px;
+        }
+
+        .investment-summary-box strong {
+            color: black;
+        }
+    </style>
 
     <script>
         function updateValues(value) {
@@ -74,8 +151,16 @@
             }
 
             document.getElementById('additional-text').innerHTML = additionalText;
-            document.getElementById('place_holder').style = 'display:none';
-            document.getElementById('next_button').style = 'display:block';
+
+            var placeHolderButton = document.getElementById('place_holder');
+            if (placeHolderButton) {
+                placeHolderButton.style.display = 'none';
+            }
+
+            var nextButton = document.getElementById('next_button');
+            if (nextButton) {
+                nextButton.style.display = 'block';
+            }
         }
 
         document.getElementById('investment_slider').addEventListener('input', function() {
@@ -87,7 +172,26 @@
             updateValues(document.getElementById('investment_slider').value);
         }
 
-        // updateValues(document.getElementById('investment_slider').value);
-    </script>
+        document.getElementById('toggle-instructions').addEventListener('click', function () {
+            console.log("Clicked");
+            var calibrationContent = document.getElementById('calibration-content');
+            var instructionsContent = document.getElementById('instructions-content');
+            var default_title = document.getElementById('default_title');
+            var instructions_title = document.getElementById('instructions_title');
 
+            if (calibrationContent.style.display === 'none') {
+                calibrationContent.style.display = 'block';
+                instructionsContent.style.display = 'none';
+                default_title.style.display = "block";
+                instructions_title.style.display = 'none';
+                this.textContent = 'Review Instructions';
+            } else {
+                calibrationContent.style.display = 'none';
+                instructionsContent.style.display = 'block';
+                default_title.style.display = "none";
+                instructions_title.style.display = 'block';
+                this.textContent = 'Back to Page';
+            }
+        });
+    </script>
 {% endblock %}

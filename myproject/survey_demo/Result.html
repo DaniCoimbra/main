@@ -1,14 +1,21 @@
 {% extends "global/Page.html" %}
 
 {% block title %}
+<div id="default_title" style="display: block;">
+
     {% if player.treatment == "treatment_1" %}
         Round Results
     {% else %}
         Cumulative Results
     {% endif %}
+</div>
+<div id="instructions_title" style="display: none;">
+    Instructions Review
+</div>
 {% endblock %}
 
 {% block content %}
+<div id="result-content">
 
     <div class="cumulative-results-container">
         <p class="cumulative-summary">
@@ -78,8 +85,72 @@
 
     {{ next_button }}
 
+</div>
+<div id="instructions-content" style="display: none;">
+    <div style="margin: 20px 0; line-height: 1.6; font-size: 1.1em;">
+        <p>Thank you for participating in this session. It should take at most <strong>30 minutes</strong> to complete, with <strong>5 minutes</strong> allocated for this screen alone. Please, read it carefully.</p>
+
+        <p>
+            During this session, you will be asked to make a choice that will help us understand your attitude towards risk. The choice is a hypothetical investment of up to $100 in a lottery that has equal chances of increasing your investment by 30% or decreasing it by 10%. Any amount that is not invested in the lottery remains unchanged. Your choice will be used to calibrate a robo-investor, which will manage your investments for the duration of the session.
+        </p>
+
+        <!-- Add the appropriate instructions for each treatment -->
+        {% if treatment == "treatment_3" %}
+            <p>
+                The session is conducted as a series of investment rounds. Each round represents a month of investment, and there are eight blocks of two investment rounds. After each block, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+            </p>
+            <p>
+                At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each block of four investment rounds, you will be given the outcome of the investment, both cumulative and per round as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
+            </p>
+        {% elif treatment == "treatment_2" %}
+            <p>
+                The session is conducted as a series of investment rounds. Each round represents a month of investment, and there are eight blocks of two investment rounds. After each block, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+            </p>
+            <p>
+                At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each block of two investment rounds, you will be given the outcome of the investment, both cumulative and per round as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
+            </p>
+        {% elif treatment == "treatment_1" %}
+            <p>
+                The session is conducted as a series of investment rounds. Each round represents a month of investment. After each round, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+            </p>
+            <p>
+                At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each round, you will be given the outcome of the investment for that round, as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
+            </p>
+        {% endif %}
+
+        <div class="investment-summary-box">
+            <p>
+                For your participation, you will receive the outcome of {% if treatment == "treatment_3" %}a randomly chosen investment block{% elif treatment == "treatment_2" %}two randomly chosen (different) investment blocks{% elif treatment == "treatment_1" %}four randomly chosen (different) investment rounds{% endif %}. The exchange rate between token-dollars and US dollars is <strong>2 US cents for every 100 token-dollars.</strong> The average payment based on all possible decisions that a robo-advisor can take {% if treatment == 3 %}per investment block{% elif treatment == 2 %}per two investment blocks{% elif treatment == 1 %}over four rounds{% endif %} is <strong>$8.50</strong> but you can make more or less depending on your hypothetical lottery investment and the outcomes of the investments chosen for payment. The absolute minimal and maximal payments are $3.60 and $19.40 respectively.
+            </p>
+        </div>
+
+        <p style="text-align: center; margin-top: 30px;">
+            <strong>Good luck, and thank you for your participation!</strong>
+        </p>
+    </div>
+</div>
+
+
+    <!-- Instructions Button -->
+    <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
 
     <style>
+        .investment-summary-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .investment-summary-box p {
+            margin: 0 0 10px;
+        }
+
+        .investment-summary-box strong {
+            color: black;
+        }
         .cumulative-results-container {
             margin-top: 20px;
             padding: 15px;
@@ -109,4 +180,30 @@
             margin-top: 20px;
         }
     </style>
+    <script>
+    document.getElementById('toggle-instructions').addEventListener('click', function () {
+        var investmentContent = document.getElementById('result-content');
+        var instructionsContent = document.getElementById('instructions-content');
+        var default_title = document.getElementById('default_title');
+        var instructions_title = document.getElementById('instructions_title');
+
+        if (investmentContent && instructionsContent && default_title && instructions_title) {
+            if (investmentContent.style.display === 'none') {
+                investmentContent.style.display = 'block';
+                instructionsContent.style.display = 'none';
+                default_title.style.display = "block";
+                instructions_title.style.display = 'none';
+                this.textContent = 'Review Instructions';
+            } else {
+                investmentContent.style.display = 'none';
+                instructionsContent.style.display = 'block';
+                default_title.style.display = "none";
+                instructions_title.style.display = 'block';
+                this.textContent = 'Back to Page';
+            }
+        } else {
+            console.error("One or more elements are missing in the DOM.");
+        }
+    });
+    </script>
 {% endblock %}
