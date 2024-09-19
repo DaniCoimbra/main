@@ -44,6 +44,7 @@ DEMO_PAGE_INTRO_HTML = """
 Here are some oTree games.
 """
 
+DEBUG = False
 
 SECRET_KEY = '6068612620467'
 
