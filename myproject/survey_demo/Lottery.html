@@ -28,9 +28,21 @@
             <p>
                 Based on the information you provided, the robo-investor has put <strong>${{ risky_investment }}</strong> in the risky asset and <strong>${{ risk_free_investment }}</strong> in the risk-free asset.     
             </p>
+            {% if treatment == "treatment_1" %}
             <p>
+                The outcome of this investment will be given to you at the end of this 1-month investment section.
+            </p>
+            {% elif treatment == "treatment_2" %}
+            <p></p>
+                The outcome of this investment will be given to you at the end of this 2-month investment section.
+            </p>
+            {% elif treatment == "treatment_3" %}
+            <p></p>
                 The outcome of this investment will be given to you at the end of this 4-month investment section.
             </p>
+            {% endif %}
+
+
         </div>
 
         <p style="padding-top:20px">
