@@ -3,7 +3,6 @@ import random
 import pandas as pd
 import json
 
-import itertools
 import math
 
 from survey_demo.lottery import L
@@ -272,7 +271,7 @@ class Lottery(Page):
             'treatment': player.treatment,
             'round': player.lottery_round,
             'lottery_type': lottery_type,
-            'risk_free_rate': round(lottery.get('rf_rate') * 100, 2),
+            'risk_free_rate': int(lottery.get('rf_rate') * 100),
             'mean': round(lottery.get('mean'), 2),
             'std_dv': round(lottery.get('std_dv'), 2),
             'risky_investment': round(lottery.get('risk'), 2),

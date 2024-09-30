@@ -12,7 +12,7 @@
 
         {% if treatment == "treatment_3" %}
             <p>
-                The session is conducted as a series of investment rounds. Each round represents a month of investment, and there are eight blocks of two investment rounds. After each block, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
+                The session is conducted as a series of investment rounds. Each round represents a month of investment, and there are four blocks of four investment rounds. After each block, you'll have an opportunity to adjust your choice of hypothetical investment in the above lottery.
             </p>
             <p>
                 At the <strong>start</strong> of every investment round <strong>you will be given 100 token-dollars</strong> that the robo-investor will invest on your behalf. After each block of four investment rounds, you will be given the outcome of the investment, both cumulative and per round as well as an opportunity to change your hypothetical investment and thus re-calibrate the robo-advisor.
@@ -38,6 +38,20 @@
                 For your participation, you will receive the outcome of {% if treatment == "treatment_3" %}a randomly chosen investment block{% elif treatment == "treatment_2" %}two randomly chosen (different) investment blocks{% elif treatment == "treatment_1" %}four randomly chosen (different) investment rounds{% endif %}. The exchange rate between token-dollars and US dollars is <strong>2 US cents for every 100 token-dollars.</strong> The average payment based on all possible decisions that a robo-advisor can take {% if treatment == 3 %}per investment block{% elif treatment == 2 %}per two investment blocks{% elif treatment == 1 %}over four rounds{% endif %} is <strong>$8.50</strong> but you can make more or less depending on your hypothetical lottery investment and the outcomes of the investments chosen for payment. The absolute minimal and maximal payments are $3.60 and $19.40 respectively.
             </p>
         </div>
+
+        {% if treatment == "treatment_3" %}
+        <div id="image-wrapper" style="margin-top:2.5em; text-align: center;">
+            <img src="{% static 'Timeline4.jpg' %}"style="width:100%; height:auto;">
+        </div>
+        {% elif treatment == "treatment_2" %}
+        <div id="image-wrapper" style="margin-top:2.5em; text-align: center;">
+            <img src="{% static 'Timeline2.jpg' %}"style="width:100%; height:auto;">
+        </div>
+        {% elif treatment == "treatment_1" %}
+        <div id="image-wrapper" style="margin-top:2.5em; text-align: center;">
+            <img src="{% static 'Timeline1.jpg' %}"style="width:100%; height:auto;">
+        </div>
+        {% endif %}
 
         <p style="text-align: center; margin-top: 30px;">
             <strong>Good luck, and thank you for your participation!</strong>
