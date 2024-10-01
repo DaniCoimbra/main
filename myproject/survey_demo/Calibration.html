@@ -30,6 +30,8 @@
             The robot is perfectly informed about the interest rate on the savings account and about the distribution of possible returns on the stock market index. 
             Both the interest rate and the distribution of stock market index returns may change from month to month. 
         </p>
+        <!-- Next Button -->
+        {{ next_button }}
     </div>
 
     <!-- Instructions Content (Initially Hidden) -->
@@ -90,11 +92,11 @@
         </div>
     </div>
 
-    <!-- Next Button -->
-    {{ next_button }}
-
     <!-- Instructions Button -->
-    <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
+    </div>
+    
     <style>
         .investment-summary-box {
             margin-top: 20px;

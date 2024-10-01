@@ -15,10 +15,13 @@
     <!-- Investment Content -->
     <div id="investment-content">
         <p>
-            This month, economic conditions are such that the savings account pays an interest rate of <strong>{{ risk_free_rate }}%</strong> 
-            and the stock market index return has an expected value of <strong>{{ mean }}%</strong> and a volatility represented by a standard deviation of 
-            <strong>{{ std_dv }}%</strong>.
+            This month, economic conditions are such that the savings account pays an <span style="color: orange;">interest rate of 
+            <strong>{{ risk_free_rate }}%</strong></span> 
+            and the stock market index return has an  <span style="color: red;">expected value of 
+            <strong>{{ mean }}%</strong></span> and a volatility represented by a <span style="color: red;">standard deviation of 
+            <strong>{{ std_dv }}%</strong></span>.
         </p>
+        
 
         <p>
             The graph below represents the distribution of this risky market index return. The graph represents what happens to each dollar invested in this index.
@@ -136,8 +139,9 @@
     </div>
 
     <!-- Instructions Button -->
-    <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
-
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
+    </div>
 
     <style>
         .iframe-container {

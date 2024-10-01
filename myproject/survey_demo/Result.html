@@ -17,7 +17,7 @@
 {% block content %}
 <div id="result-content">
 
-    <div class="cumulative-results-container">
+    <div class="cumulative-results-container" style="margin-bottom: 1.5em;">
         <p class="cumulative-summary">
             {% if player.treatment == "treatment_1" %}
                 The return from the ${{ total }} available for investments in this round is <strong>$<span id="cumulative_return">{{ cumulative_return }}</span></strong>.
@@ -84,8 +84,8 @@
     </div>
 
     {{ next_button }}
-
 </div>
+
 <div id="instructions-content" style="display: none;">
     <div style="margin: 20px 0; line-height: 1.6; font-size: 1.1em;">
         <p>Thank you for participating in this session. It should take at most <strong>30 minutes</strong> to complete, with <strong>5 minutes</strong> allocated for this screen alone. Please, read it carefully.</p>
@@ -146,7 +146,9 @@
 
 
     <!-- Instructions Button -->
-    <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="button" id="toggle-instructions" class="btn btn-secondary">Review Instructions</button>
+    </div>
 
     <style>
         .investment-summary-box {
